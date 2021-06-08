@@ -1,9 +1,9 @@
 ---
-title: "Project 3 Part 2"
+title: "Project 3: Part 2"
 author: "Anika Lindley"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{project3package Tutorial}
+  %\VignetteIndexEntry{Part 2}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -15,11 +15,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Introduction
+## Introduction
 
 `my_rf_cv` uses cross validation to assess the predictive performance of models made using random forest.
 
-## Instalation
+### Installation
 
 To install `project3package` from GitGub, run the following code in your console:
 
@@ -32,7 +32,7 @@ devtools::install_github("anikalindley/project3package", build_vignette = TRUE, 
 library(project3package)
 ```
 
-# my_rf_cv
+## my_rf_cv
 
 To demonstate the use of my_rf_cv I will predict the body mass of penguins using bill length, bill dpeth, and flipper length as covariates. 
 
@@ -41,7 +41,10 @@ To demonstate the use of my_rf_cv I will predict the body mass of penguins using
 library(reshape2)
 library(ggplot2)
 
+read.csv("../Data/my_gapminder.csv")
+read.csv("../Data/my_penguins.csv")
 source("../Code/my_rf_cv.R")
+
 
 # matrix to store random forest cross-validation output
 my_rf <- matrix(NA, 30, 3)
