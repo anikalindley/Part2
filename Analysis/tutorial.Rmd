@@ -1,5 +1,5 @@
 ---
-title: "Project 3: project3package Tutorial"
+title: "Project 3 Part 2"
 author: "Anika Lindley"
 output: rmarkdown::html_vignette
 vignette: >
@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-The package `project3package` contains four functions. `my_t.test` and `my_lm` are used to make statistical inferences and `my_knn_cv` and `my_rf_cv` use cross validation to assess the predictive performance of models made using k-nearest neighbors and random forest, respectively.
+`my_rf_cv` uses cross validation to assess the predictive performance of models made using random forest.
 
 ## Instalation
 
@@ -46,18 +46,26 @@ source("../Code/my_rf_cv.R")
 # matrix to store random forest cross-validation output
 my_rf <- matrix(NA, 30, 3)
 
+# iterate through k = 2, k = 5, k = 10
 for (i in c(2, 5, 10)) {
+  # repeat each iteration 30 times
   for(j in 1:30) {
     if (i == 2) {
+      # add to column k = 2
        my_rf[j, 1] <- my_rf_cv(i)
     } else if (i == 5) {
+      # add to column k = 5
        my_rf[j, 2] <- my_rf_cv(i)
     } else {
+      # add to column k = 10
        my_rf[j, 3] <- my_rf_cv(i)
     }
   }
 }
 
+```
+
+```{r}
 # store my_rf as data frame
 my_df <- data.frame(my_rf)
 # name columns
@@ -66,7 +74,7 @@ colnames(my_df) <- c("k = 2", "k = 5", "k = 10")
 my_df <- melt(my_df, measure.vars = c("k = 2", "k = 5", "k = 10"))
 
 # create a boxplot for each value of k
-ggplot(data = my_df, aes(x = variable, y = value)) + 
+my_plot <- ggplot(data = my_df, aes(x = variable, y = value)) + 
   geom_boxplot() + 
   theme_bw(base_size = 12) + 
   labs(x = "Number of Folds", y = "Average MSE")
@@ -89,9 +97,16 @@ my_table[, 2] <- my_sd
 colnames(my_table) <- c("Avg MSE", "SD")
 # add row names
 row.names(my_table) <- c("k = 2", "k = 5", "k = 10")
-
-my_table
-
 ```
 
-As the number of folds increases, the average mean squared error of the predictions decreases and the standard deviation of the predictions decreases. This suggests that the 10-fold random forest cross validation model has the best predictive performance, as the average MSE and SD are lower than the 2- and 5- fold models. In general, as k increases there is a chance of overfitting becasue as k increases, more of the full data set is being used to make the predicitons and less is left to test the accuracy of the predictions. In this case, I belive that the 10-fold model leaves enough data left to accuratly assess the model and yields the best predictions compared to the other models. 
+```{r}
+library(readr)
+# save plot to Figures folder
+ggsave("../Output/Figures/my_plot.pdf", my_plot)
+# save summary table to Results folder
+saveRDS(my_table, "../Output/Results/my_table.rds")
+# adjust column names
+colnames(my_rf) <- c("k2", "k5", "k10")
+# add csv file of the 90 simulated results to Results folder
+write_csv(data.frame(my_rf), "../Output/Results/my_table.csv")
+```

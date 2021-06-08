@@ -14,7 +14,7 @@
 #' @export
 my_rf_cv <- function(k) {
   # load penguin data
-  penguins2 <- project3package::my_penguins
+  penguins2 <- read.csv("../Data/my_penguins.csv")
   penguins2 <- stats::na.omit(penguins2)[, c(3:6)]
   
   # variable used to randomly assign observations to folds 1 through k
