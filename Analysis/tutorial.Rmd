@@ -3,7 +3,7 @@ title: "Project 3: Part 2"
 author: "Anika Lindley"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Part 2}
+  %\VignetteIndexEntry{Project 3: Part 2}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 
 ### Installation
 
-To install `project3package` from GitGub, run the following code in your console:
+To install `project3package` from GitHub, run the following code in your console:
 
 ```{r, eval = FALSE}
 install.packages("devtools")
@@ -34,17 +34,14 @@ library(project3package)
 
 ## my_rf_cv
 
-To demonstate the use of my_rf_cv I will predict the body mass of penguins using bill length, bill dpeth, and flipper length as covariates. 
+To demonstrate the use of my_rf_cv I will predict the body mass of penguins using bill length, bill dpeth, and flipper length as covariates. 
 
 ```{r}
-
 library(reshape2)
 library(ggplot2)
 
-read.csv("../Data/my_gapminder.csv")
-read.csv("../Data/my_penguins.csv")
+# access my_rf_cv function from Code folder
 source("../Code/my_rf_cv.R")
-
 
 # matrix to store random forest cross-validation output
 my_rf <- matrix(NA, 30, 3)

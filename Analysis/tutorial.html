@@ -325,7 +325,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <p><code>my_rf_cv</code> uses cross validation to assess the predictive performance of models made using random forest.</p>
 <div id="installation" class="section level3">
 <h3>Installation</h3>
-<p>To install <code>project3package</code> from GitGub, run the following code in your console:</p>
+<p>To install <code>project3package</code> from GitHub, run the following code in your console:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2">devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;anikalindley/project3package&quot;</span>, <span class="dt">build_vignette =</span> <span class="ot">TRUE</span>, <span class="dt">build_opts =</span> <span class="kw">c</span>())</a></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">library</span>(project3package)</a></code></pre></div>
@@ -333,35 +333,32 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 </div>
 <div id="my_rf_cv" class="section level2">
 <h2>my_rf_cv</h2>
-<p>To demonstate the use of my_rf_cv I will predict the body mass of penguins using bill length, bill dpeth, and flipper length as covariates.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw">library</span>(reshape2)</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw">library</span>(ggplot2)</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5">my_gapminder.csv &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;../Data/my_gapminder.csv&quot;</span>)</a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">my_penguins.csv &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;../Data/my_penguins.csv&quot;</span>)</a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="kw">source</span>(<span class="st">&quot;../Code/my_rf_cv.R&quot;</span>)</a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"></a>
+<p>To demonstrate the use of my_rf_cv I will predict the body mass of penguins using bill length, bill dpeth, and flipper length as covariates.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">library</span>(reshape2)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw">library</span>(ggplot2)</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co"># access my_rf_cv function from Code folder</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="kw">source</span>(<span class="st">&quot;../Code/my_rf_cv.R&quot;</span>)</a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co"># matrix to store random forest cross-validation output</span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8">my_rf &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="ot">NA</span>, <span class="dv">30</span>, <span class="dv">3</span>)</a>
 <a class="sourceLine" id="cb3-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co"># matrix to store random forest cross-validation output</span></a>
-<a class="sourceLine" id="cb3-11" data-line-number="11">my_rf &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="ot">NA</span>, <span class="dv">30</span>, <span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb3-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co"># iterate through k = 2, k = 5, k = 10</span></a>
-<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">10</span>)) {</a>
-<a class="sourceLine" id="cb3-15" data-line-number="15">  <span class="co"># repeat each iteration 30 times</span></a>
-<a class="sourceLine" id="cb3-16" data-line-number="16">  <span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">30</span>) {</a>
-<a class="sourceLine" id="cb3-17" data-line-number="17">    <span class="cf">if</span> (i <span class="op">==</span><span class="st"> </span><span class="dv">2</span>) {</a>
-<a class="sourceLine" id="cb3-18" data-line-number="18">      <span class="co"># add to column k = 2</span></a>
-<a class="sourceLine" id="cb3-19" data-line-number="19">       my_rf[j, <span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">my_rf_cv</span>(i)</a>
-<a class="sourceLine" id="cb3-20" data-line-number="20">    } <span class="cf">else</span> <span class="cf">if</span> (i <span class="op">==</span><span class="st"> </span><span class="dv">5</span>) {</a>
-<a class="sourceLine" id="cb3-21" data-line-number="21">      <span class="co"># add to column k = 5</span></a>
-<a class="sourceLine" id="cb3-22" data-line-number="22">       my_rf[j, <span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">my_rf_cv</span>(i)</a>
-<a class="sourceLine" id="cb3-23" data-line-number="23">    } <span class="cf">else</span> {</a>
-<a class="sourceLine" id="cb3-24" data-line-number="24">      <span class="co"># add to column k = 10</span></a>
-<a class="sourceLine" id="cb3-25" data-line-number="25">       my_rf[j, <span class="dv">3</span>] &lt;-<span class="st"> </span><span class="kw">my_rf_cv</span>(i)</a>
-<a class="sourceLine" id="cb3-26" data-line-number="26">    }</a>
-<a class="sourceLine" id="cb3-27" data-line-number="27">  }</a>
-<a class="sourceLine" id="cb3-28" data-line-number="28">}</a></code></pre></div>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co"># iterate through k = 2, k = 5, k = 10</span></a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="cf">for</span> (i <span class="cf">in</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">10</span>)) {</a>
+<a class="sourceLine" id="cb3-12" data-line-number="12">  <span class="co"># repeat each iteration 30 times</span></a>
+<a class="sourceLine" id="cb3-13" data-line-number="13">  <span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">30</span>) {</a>
+<a class="sourceLine" id="cb3-14" data-line-number="14">    <span class="cf">if</span> (i <span class="op">==</span><span class="st"> </span><span class="dv">2</span>) {</a>
+<a class="sourceLine" id="cb3-15" data-line-number="15">      <span class="co"># add to column k = 2</span></a>
+<a class="sourceLine" id="cb3-16" data-line-number="16">       my_rf[j, <span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">my_rf_cv</span>(i)</a>
+<a class="sourceLine" id="cb3-17" data-line-number="17">    } <span class="cf">else</span> <span class="cf">if</span> (i <span class="op">==</span><span class="st"> </span><span class="dv">5</span>) {</a>
+<a class="sourceLine" id="cb3-18" data-line-number="18">      <span class="co"># add to column k = 5</span></a>
+<a class="sourceLine" id="cb3-19" data-line-number="19">       my_rf[j, <span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">my_rf_cv</span>(i)</a>
+<a class="sourceLine" id="cb3-20" data-line-number="20">    } <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb3-21" data-line-number="21">      <span class="co"># add to column k = 10</span></a>
+<a class="sourceLine" id="cb3-22" data-line-number="22">       my_rf[j, <span class="dv">3</span>] &lt;-<span class="st"> </span><span class="kw">my_rf_cv</span>(i)</a>
+<a class="sourceLine" id="cb3-23" data-line-number="23">    }</a>
+<a class="sourceLine" id="cb3-24" data-line-number="24">  }</a>
+<a class="sourceLine" id="cb3-25" data-line-number="25">}</a></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># store my_rf as data frame</span></a>
 <a class="sourceLine" id="cb4-2" data-line-number="2">my_df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(my_rf)</a>
 <a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co"># name columns</span></a>
